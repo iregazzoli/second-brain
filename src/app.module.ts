@@ -7,11 +7,11 @@ import { AppService } from './app.service';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'dev-db', 
       port: 5432,
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
+      username: 'admin',
+      password: '1234',
+      database: 'second_brain',
       synchronize: true,
       logging: false,
       entities: ['src/**/*.entity.ts'],
