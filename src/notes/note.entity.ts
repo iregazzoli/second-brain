@@ -6,10 +6,12 @@ export class Note {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 500 })
-  text: string;
+  @Column('text', { array: true, default: () => 'ARRAY[]::text[]' })
+  tags: string[];
+
+  @Column('text')
+  content: string;
 
   @ManyToOne(() => User, user => user.notes)
   user: User;
-
 }
