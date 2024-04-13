@@ -6,11 +6,7 @@ import { AuthGuard } from '../auth/auth.guard';
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @Post()
-  create(@Body('email') userName: string, @Body('password') password: string) {
-    return this.usersService.createUser(userName, password);
-  }
-
+  
   private extractTokenFromHeader(authHeader: string): string {
     return authHeader && authHeader.split(' ')[1]; // Bearer <token>
   }
