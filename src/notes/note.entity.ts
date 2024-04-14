@@ -6,7 +6,7 @@ export class Note {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('text', { array: true, default: () => 'ARRAY[]::text[]' })
+  @Column('simple-array')
   tags: string[];
 
   @Column('text')
