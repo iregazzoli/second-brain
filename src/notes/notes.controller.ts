@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UnauthorizedException, UseGuards, Headers, Delete, Param, Patch } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { AuthGuard } from '../auth/auth.guard';
-import { NoteDto, UpdateNoteDto } from './dto';
+import { NoteDto, UpdateTagsDto, UpdateContentDto } from './dto';
 import { UsersService } from '../users/users.service';
 
 
@@ -45,18 +45,30 @@ export class NotesController {
 }
 
   @UseGuards(AuthGuard)
-  @Patch(':id')
+  @Patch(':id/tags')
   async updateTags(@Headers('authorization') authHeader: string, @Param('id') noteId: number,
-  @Body() updateNoteDto: UpdateNoteDto) {
+  @Body() UpdateTagsDto: UpdateTagsDto) {
     const token = this.extractTokenFromHeader(authHeader);
     const user = await this.usersService.findUserByJwt(token);
 
     if (!user) 
       throw new UnauthorizedException();
 
-    const updatedNote = await this.notesService.updateTags(noteId, updateNoteDto.tags);
+    const updatedNote = await this.notesService.updateTags(noteId, UpdateTagsDto.tags);
     return updatedNote;
   }
+e
+  @UseGuards(AuthGuard)
+  @Patch(':id/content')
+  async updateContent(@Headers('authorization') authHeader: string, @Param('id') noteId: number,
+  @Body() updateContentDto: UpdateContentDto) {
+    const token = this.extractTokenFromHeader(authHeader);
+    const user = await this.usersService.findUserByJwt(token);
 
+    if (!user) 
+      throw new UnauthorizedException();
 
+    const updatedNote = await this.notesService.updateContent(noteId, updateContentDto.content);
+    return updatedNote;
+  }
 }

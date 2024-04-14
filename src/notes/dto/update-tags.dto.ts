@@ -1,6 +1,6 @@
 import {  IsNotEmpty, IsString } from 'class-validator';
 
-export class UpdateNoteDto {
+export class UpdateTagsDto {
   @IsNotEmpty()
   @IsString({ each: true })
   tags: string[];
