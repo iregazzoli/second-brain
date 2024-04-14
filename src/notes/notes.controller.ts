@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UnauthorizedException, UseGuards, Headers } from '@nestjs/common';
+import { Body, Controller, Post, UnauthorizedException, UseGuards, Headers, Delete, Param } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { NoteDto } from './dto';
@@ -22,12 +22,27 @@ export class NotesController {
     const token = this.extractTokenFromHeader(authHeader);
     const user = await this.usersService.findUserByJwt(token);
   
-    if (!user) {
+    if (!user) 
       throw new UnauthorizedException();
-    }
+    
   
     const note = await this.notesService.createNote(user, createNoteDto);
     return note;
   }
+
+  @UseGuards(AuthGuard)
+  @Delete(':id')
+  async delete(@Headers('authorization') authHeader: string, @Param('id') noteId: number) {
+    const token = this.extractTokenFromHeader(authHeader);
+    const user = await this.usersService.findUserByJwt(token);
+
+    if (!user) 
+      throw new UnauthorizedException();
+    
+
+    await this.notesService.deleteNote(noteId);
+    return { message: 'Note deleted successfully' };
+}
+
 
 }
