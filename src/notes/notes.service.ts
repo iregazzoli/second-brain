@@ -42,16 +42,25 @@ export class NotesService {
   return note;
 }
 
-async updateContent(noteId: number, content: string): Promise<Note> {
-  const note = await this.noteRepository.findOne({ where: { id: noteId } });
+  async updateContent(noteId: number, content: string): Promise<Note> {
+    const note = await this.noteRepository.findOne({ where: { id: noteId } });
 
-  if (!note) 
-    throw new NotFoundException('Note not found');
+    if (!note) 
+      throw new NotFoundException('Note not found');
 
-  note.content = content;
-  await this.noteRepository.save(note);
+    note.content = content;
+    await this.noteRepository.save(note);
 
-  return note;
-}
+    return note;
+  }
+
+  async getNote(noteId: number): Promise<Note> {
+    const note = await this.noteRepository.findOne({ where: { id: noteId } });
+
+    if (!note) 
+      throw new NotFoundException('Note not found');
+
+    return note;
+  }
   
 }
