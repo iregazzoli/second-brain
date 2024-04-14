@@ -1,7 +1,7 @@
-import { Body, Controller, Post, UnauthorizedException, UseGuards, Headers, Delete, Param } from '@nestjs/common';
+import { Body, Controller, Post, UnauthorizedException, UseGuards, Headers, Delete, Param, Patch } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { AuthGuard } from '../auth/auth.guard';
-import { NoteDto } from './dto';
+import { NoteDto, UpdateNoteDto } from './dto';
 import { UsersService } from '../users/users.service';
 
 
@@ -43,6 +43,20 @@ export class NotesController {
     await this.notesService.deleteNote(noteId);
     return { message: 'Note deleted successfully' };
 }
+
+  @UseGuards(AuthGuard)
+  @Patch(':id')
+  async updateTags(@Headers('authorization') authHeader: string, @Param('id') noteId: number,
+  @Body() updateNoteDto: UpdateNoteDto) {
+    const token = this.extractTokenFromHeader(authHeader);
+    const user = await this.usersService.findUserByJwt(token);
+
+    if (!user) 
+      throw new UnauthorizedException();
+
+    const updatedNote = await this.notesService.updateTags(noteId, updateNoteDto.tags);
+    return updatedNote;
+  }
 
 
 }

@@ -29,5 +29,17 @@ export class NotesService {
   
     await this.noteRepository.remove(note);
   }
+
+  async updateTags(noteId: number, tags: string[]): Promise<Note> {
+  const note = await this.noteRepository.findOne({ where: { id: noteId } });
+
+  if (!note) 
+    throw new NotFoundException('Note not found');
+
+  note.tags = tags;
+  await this.noteRepository.save(note);
+
+  return note;
+}
   
 }

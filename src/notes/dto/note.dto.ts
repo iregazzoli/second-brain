@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsString } from "class-validator"
-import { LegacyOracleNamingStrategy } from "typeorm";
 
 export class NoteDto {
   @IsNotEmpty()
