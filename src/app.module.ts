@@ -5,6 +5,8 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { NotesModule } from './notes/notes.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -19,6 +21,9 @@ import { NotesModule } from './notes/notes.module';
       logging: false,
       entities: ['src/**/*.entity.ts'],
       migrations: ['src/migration/**/*.ts'],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname,'..', 'public'),
     }),
     AuthModule,
     UsersModule,

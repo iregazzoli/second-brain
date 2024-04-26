@@ -9,6 +9,12 @@ export class UsersController {
   private extractTokenFromHeader(authHeader: string): string {
     return authHeader && authHeader.split(' ')[1]; // Bearer <token>
   }
+
+  @Get("public")
+  async public(){
+    const users = await this.usersService.findAll();
+    return users;
+  }
   
   @UseGuards(AuthGuard)
   @Get()
